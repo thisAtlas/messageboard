@@ -1,0 +1,21 @@
+.padded {
+    margin: 10px;
+    padding: 10px;
+}
+.padding-much {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+.move-up {
+    margin-top: -70px;
+}
+.space {
+    margin: 100px;
+}
+.small-space {
+    margin: 50px;
+}
+.side-padded {
+    padding-left: 10px;
+    padding-right: 10px;
+}
