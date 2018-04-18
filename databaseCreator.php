@@ -69,8 +69,7 @@
       `user_pass` varchar(255) NOT NULL,
       `user_mail` varchar(255) NOT NULL,
       `user_level` int(8) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-    ";
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 
     if ($conn->query($sql) === TRUE) {
         echo "<blockquote>Table users created successfully. </blockquote>";
@@ -207,11 +206,11 @@
         <div class="space"></div>
         
         <?php
-            //includes the page footer from 'footer.php' so it is identical on all pages.
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

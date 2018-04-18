@@ -73,8 +73,8 @@ include('connect.php');
             </div>';
     }
     if (isset($_POST['username']) and isset($_POST['password'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = mysqli_real_escape_string($connection,$_POST['username']);
+        $password = mysqli_real_escape_string($connection,$_POST['password']);
         
         //Der tjekkes om den kombination af username og password existerer.
         $query = "SELECT 
@@ -117,7 +117,7 @@ include('connect.php');
 ?>
         </div>
         
-        <!--JavaScript at end of body for optimized loading-->
+       <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

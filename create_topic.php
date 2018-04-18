@@ -9,7 +9,7 @@ include 'connect.php';
     </head>
     <body>
         <?php
-            //Include the entire header.php page which has the <head> tag with all links and scripts, the navigation-header in the <body> and the login/logout modal.
+            //Headeren er grundlæggende for siden, da den indeholder genveje til forskellige funktioner.
             include 'header.php';
         ?>
         
@@ -31,15 +31,13 @@ include 'connect.php';
     echo '<h3 class="teal-text">Create topic:</h3>';
     if($_SESSION['signed_in'] == false)
     {
-        //If the user is not signed in
+        //I tilfælde af, at brugeren ikke er logget ind, og prøve at tilgå siden.
         echo '<blockquote>Sorry, you have to be <a href="loginLanding.php">logged in</a> to create a topic.</blockquote>';
     }
     else
     {
-        //the user is signed in
         if($_SERVER['REQUEST_METHOD'] != 'POST') {
-            //the form hasn't been posted yet, display it
-            //retrieve the categories from the database for use in the dropdown
+            //Henter data fra tabellen, så det kan bruges i den oprettede drop-down menu.
             $sqli = "SELECT
                         cat_id,
                         cat_name,
@@ -50,17 +48,18 @@ include 'connect.php';
             $result = mysqli_query($connection,$sqli);
          
             if(!$result) {
-                //the query failed, uh-oh :-(
+                //Udskrivelse af fejlbesked.
                 echo '<blockquote>Error while selecting from database. Please try again later.</blockquote>';
             } else {
                 if(mysqli_num_rows($result) == 0) {
-                    //there are no categories, so a topic can't be posted
+                    //Hvis der ikke er nogle kategorier, og brugeren prøver at lave et opslag, vil de få en besked der variere hvis de er admin eller ej.
                     if($_SESSION['user_level'] == 1) {
                         echo '<blockquote>You have not created categories yet.</blockquote>';
                     } else {
                         echo '<blockquote>Before you can post a topic, you must wait for an admin to create some categories.</blockquote>';
                     }
                 } else {
+                    //Tabellen hvor der kan indtastes data om det ønskede opslag opstilles.
                     echo '
                         <div class="row">
                             <form method="post" action="" class="col s12">
@@ -75,6 +74,7 @@ include 'connect.php';
                                         <select name="topic_cat">
                                             <option value="" disabled selected>Choose category</option>';
                     while($row = mysqli_fetch_assoc($result)) {
+                        //Hvis der ikke er noget galt med den modtagne data, oprettes drop-down menuen.
                         echo '
                                             <option value="' . $row['cat_id'] . '">' . $row['cat_name'] . '</option>';
                     }
@@ -102,11 +102,9 @@ include 'connect.php';
             $result = $connection->query($query);
          
             if(!$result) {
-                //Damn! the query failed, quit
                 echo '<blockquote>An error occured while creating your topic. Please try again later.</blockquote>';
             } else {
-                //the form has been posted, so save it
-                //insert the topic into the topics table first, then we'll save the post into the posts table
+                //Data fra formen parses, og sættes ind i "topics" tabellen.
             
                 $subject = mysqli_real_escape_string($connection,$_POST['topic_subject']);
                 $category = mysqli_real_escape_string($connection,$_POST['topic_cat']);
@@ -126,11 +124,10 @@ include 'connect.php';
                 
                 $result = mysqli_query($connection,$sqli);
                 if(!$result) {
-                    //something went wrong, display the error
                     echo '<blockquote>An error occured while inserting your data. Please try again later.</blockquote>' . mysqli_error($connection);
                 } else {
-                    //the first query worked, now start the second, posts query
-                    //retrieve the id of the freshly created topic for usage in the posts query
+                    // Hvis den første indsættelse af data var succesfuld, startes den anden, der sætte data ind i "posts" tabellen.
+                    // Man kan gøre brug af id'et fra det forrigt hentede opslag, når man indsætter data i "posts" tabellen, for at forbinde de to og dermed gøre det nemmere at finde rundt i.
                 
                     $topicid = mysqli_insert_id($connection);
                     $pContent = mysqli_real_escape_string($connection,$_POST['post_content']);
@@ -150,20 +147,19 @@ include 'connect.php';
                     $result = $connection->query($sqli);
                  
                     if(!$result) {
-                        //something went wrong, display the error
                         echo '<blockquote>An error occured while inserting your post. Please try again later.' . mysqli_error($connection) . '</blockquote>';
+                        //Hvis noget gik galt, sørger "ROLLBACK" for at handlingen bliver afbrud, og ændringerne bliver annulleret.
                         $sqli = "ROLLBACK;";
                         $result = $connection->query($sqli);
                     } else {
+                        //Hvis alt går som det skal, sørger "COMMIT" for at dataen indsættes i tabellen.
                         $sqli = "COMMIT;";
                         $result = $connection->query($sqli);
                         
-                        //after a lot of work, the query succeeded!
                         
                         //Path til den topic man lige har lavet. Header(''); virker ikke for some reason.
-                        
-                        //header('topic.php?id="'. $topicid . '"');
                         echo '<blockquote>You have successfully created <a href="topic.php?id='. $topicid . '">your new topic</a>.</blockquote>';
+
                     }
                 }
             }
@@ -174,12 +170,12 @@ include 'connect.php';
         </div>
         
         <?php
-            //includes the page footer from 'footer.php' so it is identical on all pages.
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
         <!--Scripts-->
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

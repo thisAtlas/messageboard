@@ -10,7 +10,7 @@ include('connect.php');
     </head>
     <body>
         <?php
-            //Include the entire header.php page which has the <head> tag with all links and scripts, the navigation-header in the <body> and the login/logout modal.
+            //Headeren er grundlæggende for siden, da den indeholder genveje til forskellige funktioner.
             include 'header.php';
         ?>
         
@@ -93,11 +93,11 @@ include('connect.php');
         <div class="space"></div>
         
         <?php
-            //includes the page footer from 'footer.php' so it is identical on all pages.
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

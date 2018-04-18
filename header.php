@@ -58,6 +58,9 @@ if(!isset($_SESSION['username'])) {
                 
                 <ul id="nav-mobile" class="sidenav">
                     <?php
+                        //Knapperne i headeren ændres afhængigt af om brugeren er logget ind.
+                        //Hvis brugeren er logget ind, har de mulighed for at logge ud.
+                        //Hvis brugeren ikke er logget ind, har de mulighed for at lave en konto og logge ind.
                         if($_SESSION['signed_in'] === TRUE) {
                             echo '<li><a href="logout.php" class="btn red">Log out</a></li>';
                         } else {

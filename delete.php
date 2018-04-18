@@ -24,7 +24,10 @@ if($_SESSION['user_level'] == 1) {
         echo '<blockquote>This file cannot be called directly.<br>
               <a href="forum.php">Click here to go back to the front page</a></blockquote>';
     } else {
+        // $_GET['did']; henter den værdi "did" har fået tilegnet i URL'en.
         $getDid = $_GET['did'];
+        
+        //Vælger hvilken tabel sletningen skal foretages i, og bruger postID'et til at vælge hvilken række i tabellen "posts" der skal slettes.
         $sqli = "DELETE FROM 
                     `posts`
                 WHERE 
@@ -47,7 +50,7 @@ if($_SESSION['user_level'] == 1) {
             </div>
         </div>
         
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

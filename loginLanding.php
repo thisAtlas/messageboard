@@ -1,5 +1,6 @@
 <?php
 include('connect.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,7 @@ include('connect.php');
     </head>
     <body>
         <?php
-            //Include the entire header.php page which has the <head> tag with all links and scripts, the navigation-header in the <body> and the login/logout modal.
+            //Headeren er grundlæggende for siden, da den indeholder genveje til forskellige funktioner.
             include 'header.php';
         ?>
         
@@ -51,8 +52,8 @@ include('connect.php');
             </div>';
     }
     if (isset($_POST['username']) and isset($_POST['password'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = mysqli_real_escape_string($connection,$_POST['username']);
+        $password = mysqli_real_escape_string($connection,$_POST['password']);
         
         //Der tjekkes om den kombination af username og password existerer.
         $query = "SELECT 
@@ -72,10 +73,6 @@ include('connect.php');
             echo '<blockquote>Something went wrong.<br>
                   Please <a href="login.php">try again</a></blockquote>';
         } else if (mysqli_num_rows($result) == 0) {
-            //header('Location: forum.php');
-            /*echo '<blockquote>Wrong username or password.<br>
-                  Please check your login credentials and <a href="forum.php">try again</a>.</blockquote>';
-            */
         } else {
             //Resultaterne fra tabellen hvor de førnævnte krav er opfyldte stilles op i et array.
             while($row =mysqli_fetch_assoc($result)){
@@ -100,11 +97,11 @@ include('connect.php');
         <div class="space"></div>
         
         <?php
-            //includes the page footer from 'footer.php' so it is identical on all pages.
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

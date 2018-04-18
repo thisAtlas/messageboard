@@ -11,7 +11,7 @@ include 'connect.php';
     
     <body>
         <?php
-            //Include the entire header.php page which has the <head> tag with all links and scripts, the navigation-header in the <body> and the login/logout modal.
+            //Headeren er grundlæggende for siden, da den indeholder genveje til forskellige funktioner.
             include 'header.php';
         ?>
         
@@ -44,7 +44,7 @@ include 'connect.php';
                 <div class="small-space"></div>
 <?php
 $getId =$_GET['id']; 
-//first select the category based on $_GET['cat_id']
+// Vælger hvilken data skal hentes fra hvilken tabel.
 $sqli = "SELECT
             cat_id,
             cat_name,
@@ -59,16 +59,17 @@ $result = $connection->query($sqli);
 if(!$result) {
     echo '<blockquote>The category could not be displayed, please try again later.</blockquote>' . mysqli_error($connection);
 } else {
+    //mysqli_num_rows henter dataen som et array, hvis der ikke er data at hente, udskriver den en fejl i stedet.
     if(mysqli_num_rows($result) == 0) {
         echo '<blockquote>This category does not exist.' . mysqli_error($connection) . '</blockquote>';
     } else {
-        //display category data
+        //Deler den hentede data op i rækker, der kan kaldes individuelt.
         while($row = mysqli_fetch_assoc($result))
         {
             echo '<h3 class="teal-text text-lighten-1">Topics in ′' . $row['cat_name'] . '′ category</h3>';
         }
         
-        //do a query for the topics
+        // Vælger hvilken data skal hentes fra hvilken tabel.
         $sqli = "SELECT  
                     topic_id,
                     topic_subject,
@@ -80,23 +81,24 @@ if(!$result) {
                     topic_cat = " . mysqli_real_escape_string($connection,$_GET['id']);
          
         $result = $connection->query($sqli);
-         
+         //Hvis der ikke er noget resultat fra datasøgningen udskriver siden en fejlbesked.
         if(!$result)
         {
             echo '<blockquote>The topics could not be displayed, please try again later.</blockquote>';
         }
         else
         {
+            //Hvis der ikke er nogle opslag at hente, gøres brugeren opmærksom på det, og bliver henvist til at lave et opslag
             if(mysqli_num_rows($result) == 0) {
                 echo '<blockquote>There are no topics in this category yet.
                       Would you like to <a href="create_topic.php" class="teal-text">Create a topic</a>?</blockquote>';
             } else {
-                //prepare the table
+                //Tabellen Dannes.
                 echo '<div class="row">
                         <div class="col s6 grey lighten-3"><h4>Topic</h4></div>
                         <div class="col s6 grey lighten-3 center-align"><h4>Date of creation</h4></div>
                       </div>'; 
-                     
+                //Tabellen er dynamisk, og ændres efter hvor meget data der ligger i tabellen. Der bliver lavet rækket indtil der ikke er meget data at hente.     
                 while($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="row">
                             <div class="leftpart col s6 side-padded">
@@ -106,6 +108,7 @@ if(!$result) {
                             </div>
                             <div class="rightpart col s6 side-padded">
                                 <h5 class="center-align">';
+                    //Der sorteres efter dato, så det nyeste opslag vises overst på siden.
                     echo date('d-m-Y', strtotime($row['topic_date']));
                     echo '      </h5>
                             </div>
@@ -120,10 +123,11 @@ if(!$result) {
         </div>
         
         <?php
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

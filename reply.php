@@ -47,17 +47,17 @@ include 'connect.php';
 <?php
 if($_SERVER['REQUEST_METHOD'] != 'POST')
 {
-    //someone is calling the file directly, which we don't want
+    //I tilfælde af at en bruger prøver at tilgå filen direkte, blive de nægtet adgang da denne version ikke er funktionsdygtig.
     echo '<blockquote>This file cannot be called directly.</blockquote>';
 }
 else
 {
-    //check for sign in status
+    //Der tjekkes om brugeren er logget ind.
     if(!$_SESSION['signed_in']) {
         echo '<blockquote>You must be <a href="loginLanding.php">signed in</a> to post a reply.<br>
         If you do not have an account, you can <a href="register.php">register here</a>.</blockquote>';
     } else {
-        //a real user posted a real reply
+        //Kommentaren indsættes i databasen.
         $sqli = "INSERT INTO 
                     `posts`
                          (post_content,
@@ -83,7 +83,7 @@ else
             </div>
         </div>
         
-        <!--JavaScript at end of body for optimized loading-->
+       <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

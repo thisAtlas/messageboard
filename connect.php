@@ -5,7 +5,7 @@ if (!$connection){
     die("Database Connection Failed" . mysqli_error($connection));
 }
 
-// Databasen "brugere" vælges.
+// Databasen "forum" vælges.
 $select_db = mysqli_select_db($connection, 'forum');
 if (!$select_db){
     die("Database Selection Failed" . mysqli_error($connection));

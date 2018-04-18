@@ -15,7 +15,7 @@ if(!isset($_SESSION['user_level'])) {
     </head>
     <body>
         <?php
-            //Include the entire header.php page which has the <head> tag with all links and scripts, the navigation-header in the <body> and the login/logout modal.
+            //Headeren er grundlæggende for siden, da den indeholder genveje til forskellige funktioner.
             include 'header.php';
         ?>
         
@@ -39,7 +39,7 @@ if(!isset($_SESSION['user_level'])) {
                                        
 <?php
 $getId =$_GET['id']; 
-//first select the category based on $_GET['cat_id']
+//$_GET['cat_id'] henter kategoriens ID fra url'en, og bruger den til at bestemme hvilket opslag der skal hentes information on.
 $sqli = "SELECT
             topic_id,
             topic_subject
@@ -60,7 +60,7 @@ else
         echo '<blockquote>This topic does not exist.<br>'
               . mysqli_error($connection) . '</blockquote>';
     } else {
-        //prepare the table
+        //Tabellen opstilles
         $row = mysqli_fetch_assoc($result);
         $topic_subject = $row['topic_subject'];
         $topic_id = $row['topic_id'];
@@ -141,12 +141,12 @@ else
         <div class="small-space"></div>
         
         <?php
-            //includes the page footer from 'footer.php' so it is identical on all pages.
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
         <!--Scripts-->
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>

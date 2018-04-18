@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'connect.php';
+//Sætter standardværdi for administrator tilladelser, så almene brugere ikke kan lave kategorier hvis de tilgår siden direkte.
 if(!isset($_SESSION['user_level'])) {
     $_SESSION['user_level'] = 0;
 }
@@ -12,7 +13,7 @@ if(!isset($_SESSION['user_level'])) {
     </head>
     <body>
         <?php
-            //Include the entire header.php page which has the <head> tag with all links and scripts, the navigation-header in the <body> and the login/logout modal.
+            //Headeren er grundlæggende for siden, da den indeholder genveje til forskellige funktioner.
             include 'header.php';
         ?>
         
@@ -31,9 +32,11 @@ if(!isset($_SESSION['user_level'])) {
         <div class="container">
             <div class="section z-depth-3 padded padding-much move-up white">
 <?php
+    //Tjekker om brugeren er administrator, da de ellers ikke skal have adgang til at lave en kategori.
 if($_SESSION['user_level'] == 1) {
     if($_SERVER['REQUEST_METHOD'] != 'POST')
     {
+        //Tabellen hvori administratoren indtaster data om den ønskede kategori.
         echo '  <h3 class="teal-text">Create category:</h3>
                 <div class="row">
                     <form method="post" action="" class="col s12">
@@ -59,22 +62,24 @@ if($_SESSION['user_level'] == 1) {
     }
     else
     {
-        //the form has been posted, so save it
+        //De indtastede data i formen forbindes til variabler, og bliver gennemarbejdet så programmet er klar over at det er en string og ikke kode der kan eksekveres.
         $catname = mysqli_real_escape_string($connection,$_POST['cat_name']);
         $catdesc = mysqli_real_escape_string($connection, $_POST['cat_description']);
-    
+        
+        //Indsætter den indtastede data i tabellen "categories" for at prøve at oprette den ønskede kategori.
         $sqli = "INSERT INTO `categories` (cat_name, cat_description) VALUES('$catname','$catdesc')";
              
         $result = mysqli_query($connection,$sqli);
         
         if(!$result)
         {
-            //something went wrong, display the error
+            //Noget gik galt, udskriv fejlen.
             echo '<blockquote>Error: ' . mysqli_error($connection) . '.<br>
                   <a href="forum.php">Return to overview</a><blockquote>';
         }
         else
         {
+            //Hvis der derimod ikke opstår nogen fejl, bliver brugen sendt tilbage til forummets oversigt, og får en besked om at oprettelsen lykkedes.
             echo
             "<script>
                 alert('Category successfully added');
@@ -84,6 +89,7 @@ if($_SESSION['user_level'] == 1) {
     }
     
     } else {
+    //Hvis brugeren ikke har administratorprivilegier, og prøver at tilgå siden, vil de blive nægtet adgang og få følgende besked.
     echo '<blockquote>You do not have admin priviliges, and are thus unauthorized to create new categories.<br>
           <a href="forum.php">Return to the front page.</a></blockquote>';
 }
@@ -94,12 +100,12 @@ if($_SESSION['user_level'] == 1) {
         <div class="space"></div>
         
         <?php
-            //includes the page footer from 'footer.php' so it is identical on all pages.
+            //Footeren inkluderes på alle sider for at skabe symmetri og sammenhæng
             include 'footer.php';
         ?>
         
         <!--Scripts-->
-        <!--JavaScript at end of body for optimized loading-->
+        <!--Javascript loades til sidst på siden, for at forbedre performance-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
 </html>
